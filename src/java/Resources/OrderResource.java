@@ -1,15 +1,18 @@
-package Pack;
+package Resources;
 
 import Data.Order;
+import Data.OrderService;
 import Data.Transaction;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -51,10 +54,11 @@ JAX-RS program, These methods are based off the RESTful API assignemnt from L05
 where we created a peer-to-peer payment application.
 */
 @Path("payme")
-public class IST411L07GroupWork {
+public class OrderResource {
 
 //   @PersistenceContext(unitName = "Pack_war_1.0-SNAPSHOTPU")    
     private EntityManager entityManager;
+    OrderService orderService = new OrderService();
     
     /**
      * @param args the command line arguments
@@ -103,13 +107,34 @@ public class IST411L07GroupWork {
     of the @FormParam
     @param orderId
     */
+//    @POST
+//    @Path("form")
+//    @Consumes("application/x-www-form-urlencoded")
+//    public String createOrder(@PathParam("orderId") int orderId) {
+////        Order entity = new Order();
+////        entity.setOrderId(orderId);
+////        entityManager.persist(entity);
+//        
+//        return"Post Works!";
+//        
+//    }
+//    @POST
+//    @Path("form")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String addMessage(){
+//        
+//        return "POST works!";
+//    }
+    
     @POST
     @Path("form")
-    public void createOrder(@FormParam("orderId") Short orderId) {
-        Order entity = new Order();
-        entity.setOrderId(orderId);
-        entityManager.persist(entity);
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)    
+    public Order addOrder(Order order){
+        
+        return orderService.addOrder(order);
     }
+    
     
     @GET
     @Path("paymentcheckout/v3/orderup/")
@@ -119,15 +144,42 @@ public class IST411L07GroupWork {
         return "<html lang=\"en\"><body><h1>Hello, World!!</body?</h1></html>";
     }
     
+    @GET
+    @Path("money")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Order> getOrders(){
+        return orderService.getAllOrders();
+    }
+    
     /*
     readOrder() is a @GET method that returns an order value as a string
     @param orderId
     */
     @GET
-    @Path("paymentcheckout/v3/order/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void readOrder(@PathParam("orderId") Short orderId) {
-        //read transaction from the data store
+    @Path("paymentcheckout/v3/order/{orderId}")
+    @Produces("text/html")
+    public String readOrder(@PathParam("orderId") int orderId) {
+       String text = "Temp Data";
+        
+        ArrayList<Order> orderArray = new ArrayList<Order>();
+//        Order order1 = new Order(1, "Lefebvre", "Chris", 1, "Janvey", "Sam", 2, 25.50);
+//        orderArray.add(order1);
+        
+        for(int i = 0; i < orderArray.size(); i++){
+            if(orderId == orderArray.get(i).getOrderId()){
+                text = ("Order ID: " + orderArray.get(i).getOrderId() +
+                    "\r\nSender Name: " + orderArray.get(i).getSenderLastName() + ", " + orderArray.get(i).getSenderFirstName() + 
+                    "\nRecipent Name: " + orderArray.get(i).getRecipientLastName() + ", " + orderArray.get(i).getRecipientFirstName() + 
+                    "\nTransaction Amount: $" + String.format("%.2f",orderArray.get(i).getTransactionAmount())); 
+                return text;
+            }
+            else{
+                text = ("No order with the ID#" + orderId); 
+                return text;
+            }              
+        }
+        
+        return text;
     }
     
     /*
