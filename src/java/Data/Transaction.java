@@ -16,21 +16,21 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@Table(name = "Transactions")
-@XmlRootElement
-
-@NamedQueries({
-    @NamedQuery(name = "Transactions.findAll", query = "SELECT d FROM Transactions d"),
-    @NamedQuery(name = "Transactions.findByOrderId", query = "SELECT d FROM Transactions d WHERE d.transactionID = :transactionID")
-})
+//@Entity
+//@Table(name = "Transactions")
+//@XmlRootElement
+//
+//@NamedQueries({
+//    @NamedQuery(name = "Transactions.findAll", query = "SELECT d FROM Transactions d"),
+//    @NamedQuery(name = "Transactions.findByOrderId", query = "SELECT d FROM Transactions d WHERE d.transactionID = :transactionID")
+//    })
 public class Transaction implements Serializable{
     
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "TRANSACTION_ID")
-    private short transactionID;
+//    @Id
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "TRANSACTION_ID")
+//    private short transactionID;
     
     /*
      @Column(name = "sender_last_name")

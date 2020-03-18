@@ -13,6 +13,13 @@ import java.util.Map;
  *
  * @author Chris Lefebvre
  */
+
+/**
+ * This class acts as the backbone coding for the GET, POST, PUT, and DELETE Methods
+ * Each instance of Order is passed through a hash map and this class also has
+ * two instances of Order hard coded in.
+ * 
+ */
 public class OrderService {
     
     private List<Order> orderList = new ArrayList<>();

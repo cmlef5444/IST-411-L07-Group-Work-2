@@ -32,25 +32,9 @@ import javax.ws.rs.core.MediaType;
  */
 
 /*
-Required CRUD
- Create
- Login - Post: payme.com/auth/Token/v3/
- Logout - Post: payme.com/auth/logout
- Order - Post: payme.com/cart/v3/order/{order_id}
- Read
- Get: payme.com/paymentcheckout/v3/order/{order_id}
- Get: payme.com/paymentcheckout/v3/order/all
- Get: payme.com/transactions/v4/{Transaction_id}
- Get: payme.com/transactions/v4/all
- Update
- Put: payme.com/paymentcheckout/v3/order/{order_id}
- Delete
- Delete: payme.com/paymentCheckout/v3/order/{order_id}
- */
-
-/*
-The purpose of this program is to demonstrate the coding that would be used in a 
-JAX-RS program, These methods are based off the RESTful API assignemnt from L05
+The purpose of this program is to demonstrate a JAX-RS API,
+Below we demonstrate how to use GET, POST, PUT, and DELETE methods.
+These methods are based off the RESTful API assignemnt from L05
 where we created a peer-to-peer payment application.
 */
 @Path("payme")
@@ -66,19 +50,19 @@ public class OrderResource {
      * @Param (unused) URL examples
      */
     public static void main(String[] args) {
-        try {
-            //CREATE
-            URL loginURL = new URL("www.payme.com/auth/Token/v3");
-            URL logoutURL = new URL("www.payme.com/auth/logout");
-            URL orderURL = new URL("www.payme.com/cart/v3/order/48");
-            //READ
-            URL orderAllURL = new URL("www.payme.com/cart/v3/order/all");
-            URL transactionURL = new URL("www.payme.com/transactions/v4/48");
-            URL transactionAllURL = new URL("www.payme.com/transactions/v4/all");
-            //UPDATE & DELETE
-            URL paymentURL = new URL("www.payme.com/paymentcheckout/v3/order/48");
-        } catch (MalformedURLException e) {
-        }
+//        try {
+//            //CREATE
+//            URL loginURL = new URL("www.payme.com/auth/Token/v3");
+//            URL logoutURL = new URL("www.payme.com/auth/logout");
+//            URL orderURL = new URL("www.payme.com/cart/v3/order/48");
+//            //READ
+//            URL orderAllURL = new URL("www.payme.com/cart/v3/order/all");
+//            URL transactionURL = new URL("www.payme.com/transactions/v4/48");
+//            URL transactionAllURL = new URL("www.payme.com/transactions/v4/all");
+//            //UPDATE & DELETE
+//            URL paymentURL = new URL("www.payme.com/paymentcheckout/v3/order/48");
+//        } catch (MalformedURLException e) {
+//        }
     }
     
     /**

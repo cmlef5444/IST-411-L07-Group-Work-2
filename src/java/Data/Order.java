@@ -16,21 +16,21 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@Table(name = "Orders")
-@XmlRootElement
-
-@NamedQueries({
-    @NamedQuery(name = "Orders.findAll", query = "SELECT d FROM Orders d"),
-    @NamedQuery(name = "Orders.findByOrderId", query = "SELECT d FROM Order d WHERE d.orderID = :orderId")
-})
+//@Entity
+//@Table(name = "Orders")
+//@XmlRootElement
+//
+//@NamedQueries({
+//    @NamedQuery(name = "Orders.findAll", query = "SELECT d FROM Orders d"),
+//    @NamedQuery(name = "Orders.findByOrderId", query = "SELECT d FROM Order d WHERE d.orderID = :orderId")
+//})
 
 public class Order implements Serializable {
 
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ORDER_ID")
+//    @Id
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "ORDER_ID")
     private long orderId;
 
     @Column(name = "sender_last_name")
