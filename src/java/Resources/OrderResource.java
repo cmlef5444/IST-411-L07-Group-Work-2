@@ -174,6 +174,13 @@ public class OrderResource {
         return orderService.updateOrder(order);
     }
     
+    @DELETE
+    @Path("order/delete/{orderId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void deleteOrder(@PathParam("orderId") long id){
+        orderService.removeOrder(id);
+    }
+    
     
    
     /*
