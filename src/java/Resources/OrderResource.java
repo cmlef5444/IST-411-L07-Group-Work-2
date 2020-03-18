@@ -126,87 +126,54 @@ public class OrderResource {
 //        return "POST works!";
 //    }
     
-    @POST
-    @Path("form")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)    
-    public Order addOrder(Order order){
-        
-        return orderService.addOrder(order);
-    }
-    
-    
+//    @POST
+//    @Path("form")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)    
+//    public Order addOrder(Order order){
+//        
+//        return orderService.addOrder(order);
+//    }
+//    
+//    
+//    @GET
+//    @Path("paymentcheckout/v3/orderup/")
+//    @Produces("text/html")
+//    public String getHtml() {
+//        String text = "Hello World!";
+//        return "<html lang=\"en\"><body><h1>Hello, World!!</body?</h1></html>";
+//    }
+//    
     @GET
-    @Path("paymentcheckout/v3/orderup/")
-    @Produces("text/html")
-    public String getHtml() {
-        String text = "Hello World!";
-        return "<html lang=\"en\"><body><h1>Hello, World!!</body?</h1></html>";
-    }
-    
-    @GET
-    @Path("money")
+    @Path("order/all")
     @Produces(MediaType.APPLICATION_XML)
-    public List<Order> getOrders(){
+    public List<Order> getAllOrders(){
         return orderService.getAllOrders();
     }
     
-    /*
-    readOrder() is a @GET method that returns an order value as a string
-    @param orderId
-    */
     @GET
-    @Path("paymentcheckout/v3/order/{orderId}")
-    @Produces("text/html")
-    public String readOrder(@PathParam("orderId") int orderId) {
-       String text = "Temp Data";
-        
-        ArrayList<Order> orderArray = new ArrayList<Order>();
-//        Order order1 = new Order(1, "Lefebvre", "Chris", 1, "Janvey", "Sam", 2, 25.50);
-//        orderArray.add(order1);
-        
-        for(int i = 0; i < orderArray.size(); i++){
-            if(orderId == orderArray.get(i).getOrderId()){
-                text = ("Order ID: " + orderArray.get(i).getOrderId() +
-                    "\r\nSender Name: " + orderArray.get(i).getSenderLastName() + ", " + orderArray.get(i).getSenderFirstName() + 
-                    "\nRecipent Name: " + orderArray.get(i).getRecipientLastName() + ", " + orderArray.get(i).getRecipientFirstName() + 
-                    "\nTransaction Amount: $" + String.format("%.2f",orderArray.get(i).getTransactionAmount())); 
-                return text;
-            }
-            else{
-                text = ("No order with the ID#" + orderId); 
-                return text;
-            }              
-        }
-        
-        return text;
+    @Path("order/{orderId}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Order getSingleOrder(@PathParam("orderId") long orderId){
+        return orderService.getOrder(orderId);
     }
     
-    /*
-    findOrder() demonstrates the use of the @Produces annotation and allows the user
-    to have a single order returned to them by its orderId
-    @param orderId
-    */
-    @GET
-    @Path("{orderId}")
+    @POST
+    @Path("order/create")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Order findOrder(@PathParam("orderId") Short orderId){
-        return entityManager.find(Order.class, orderId);
+    public Order createOrder(Order order){
+        return orderService.addOrder(order);
+    }
+    //FIX_ME delete method test()
+    @POST
+    @Path("order/make")
+    public String test(){
+        return "POST works";
     }
     
-    /*
-    findAllOrders() is similar to findOrder() except is returns the full list of orders
-    it uses a CriteriaQuery as used in the textbook to build then output into a List.
-    We are unsure why the getCriteriaBuilder is not working as it did in the book example
-    */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Order> findAllOrders(){
-        CriteriaQuery cq = entityManager.getCriteriaBuilder().createQuery();        
-        cq.select(cq.from(Order.class));
-        List<Order> orders = entityManager.createQuery(cq.toString()).getResultList();
-        return orders;
-    }
+    
+   
     /*
     updateOrder() is a @PUT method that that allows the an instance of an Order to 
     be replaced with new data
