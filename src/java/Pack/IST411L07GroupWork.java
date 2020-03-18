@@ -50,6 +50,7 @@ The purpose of this program is to demonstrate the coding that would be used in a
 JAX-RS program, These methods are based off the RESTful API assignemnt from L05
 where we created a peer-to-peer payment application.
 */
+@Path("payme")
 public class IST411L07GroupWork {
 
 //   @PersistenceContext(unitName = "Pack_war_1.0-SNAPSHOTPU")    
@@ -108,6 +109,14 @@ public class IST411L07GroupWork {
         Order entity = new Order();
         entity.setOrderId(orderId);
         entityManager.persist(entity);
+    }
+    
+    @GET
+    @Path("paymentcheckout/v3/orderup/")
+    @Produces("text/html")
+    public String getHtml() {
+        String text = "Hello World!";
+        return "<html lang=\"en\"><body><h1>Hello, World!!</body?</h1></html>";
     }
     
     /*

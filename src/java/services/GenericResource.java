@@ -38,8 +38,8 @@ public class GenericResource {
     @GET
     @Produces("text/html")
     public String getHtml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+        String text = "Hello World!";
+        return "<html lang=\"en\"><body><h1>Hello, World!!</body?</h1></html>";
     }
 
     /**
