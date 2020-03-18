@@ -1,15 +1,18 @@
 package Pack;
 
+import Data.DataService;
 import Data.Order;
 import Data.Transaction;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -55,6 +58,9 @@ public class IST411L07GroupWork {
 
 //   @PersistenceContext(unitName = "Pack_war_1.0-SNAPSHOTPU")    
     private EntityManager entityManager;
+    private ArrayList<Order> orderArray;
+    
+    private DataService dataService = DataService.getInstance();
     
     /**
      * @param args the command line arguments
@@ -62,6 +68,10 @@ public class IST411L07GroupWork {
      * @Param (unused) URL examples
      */
     public static void main(String[] args) {
+        ArrayList<Order> orderArray = new ArrayList<Order>();
+        Order order1 = new Order(1, "Lefebvre", "Chris", 1, "Janvey", "Sam", 2, 25.50);
+        orderArray.add(order1);
+        
         try {
             //CREATE
             URL loginURL = new URL("www.payme.com/auth/Token/v3");
@@ -75,6 +85,10 @@ public class IST411L07GroupWork {
             URL paymentURL = new URL("www.payme.com/paymentcheckout/v3/order/48");
         } catch (MalformedURLException e) {
         }
+        
+       
+        
+        
 //        System.out.println("Type in what you wish to test");
 //        System.out.println("[1]CREATE order, [2] READ order, [3] UPDATE order, [4] DELETE order");
     }
@@ -104,11 +118,24 @@ public class IST411L07GroupWork {
     @param orderId
     */
     @POST
-    @Path("form")
-    public void createOrder(@FormParam("orderId") Short orderId) {
-        Order entity = new Order();
-        entity.setOrderId(orderId);
-        entityManager.persist(entity);
+    @Path("paymentcheckout/v3/order/form/{orderId}")
+    @Consumes("Text/plain")
+    @Produces(MediaType.TEXT_PLAIN)
+    public int createOrder(@PathParam("orderId") Order orderId) {
+//        Order entity = new Order();
+//        entity.setOrderId(orderId);
+//        getEntityManager().persist(entity);
+//        orderArray = new ArrayList<Order>();
+//        Order orderNew = new Order(orderId, "Mantha", "Kristina", 3, "Lefebvre", "Chris", 1, 45.50);
+//        orderArray.add(orderNew);
+        
+//        String text = ("The following order has been created\n " + "Order ID: " + orderArray.get(orderArray.size()-1).getOrderId() +
+//                    "\r\nSender Name: " + orderArray.get(orderArray.size()-1).getSenderLastName() + ", " + orderArray.get(orderArray.size()-1).getSenderFirstName() + 
+//                    "\nRecipent Name: " + orderArray.get(orderArray.size()-1).getRecipientLastName() + ", " + orderArray.get(orderArray.size()-1).getRecipientFirstName() + 
+//                    "\nTransaction Amount: $" + String.format("%.2f",orderArray.get(orderArray.size()-1).getTransactionAmount()));
+//        return text;
+        
+        return dataService.addOrder(orderId);
     }
     
     @GET
@@ -124,10 +151,31 @@ public class IST411L07GroupWork {
     @param orderId
     */
     @GET
-    @Path("paymentcheckout/v3/order/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void readOrder(@PathParam("orderId") Short orderId) {
-        //read transaction from the data store
+    @Path("paymentcheckout/v3/order/{orderId}")
+//    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("text/html")
+    public String readOrder(@PathParam("orderId") int orderId) {
+        String text = "Temp Data";
+        
+        ArrayList<Order> orderArray = new ArrayList<Order>();
+        Order order1 = new Order(1, "Lefebvre", "Chris", 1, "Janvey", "Sam", 2, 25.50);
+        orderArray.add(order1);
+        
+        for(int i = 0; i < orderArray.size(); i++){
+            if(orderId == orderArray.get(i).getOrderId()){
+                text = ("Order ID: " + orderArray.get(i).getOrderId() +
+                    "\r\nSender Name: " + orderArray.get(i).getSenderLastName() + ", " + orderArray.get(i).getSenderFirstName() + 
+                    "\nRecipent Name: " + orderArray.get(i).getRecipientLastName() + ", " + orderArray.get(i).getRecipientFirstName() + 
+                    "\nTransaction Amount: $" + String.format("%.2f",orderArray.get(i).getTransactionAmount())); 
+                return text;
+            }
+            else{
+                text = ("No order with the ID#" + orderId); 
+                return text;
+            }              
+        }
+        
+        return text;
     }
     
     /*
@@ -139,7 +187,7 @@ public class IST411L07GroupWork {
     @Path("{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Order findOrder(@PathParam("orderId") Short orderId){
-        return entityManager.find(Order.class, orderId);
+        return getEntityManager().find(Order.class, orderId);
     }
     
     /*
@@ -150,9 +198,9 @@ public class IST411L07GroupWork {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> findAllOrders(){
-        CriteriaQuery cq = entityManager.getCriteriaBuilder().createQuery();        
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();        
         cq.select(cq.from(Order.class));
-        List<Order> orders = entityManager.createQuery(cq.toString()).getResultList();
+        List<Order> orders = getEntityManager().createQuery(cq.toString()).getResultList();
         return orders;
     }
     /*
@@ -164,7 +212,7 @@ public class IST411L07GroupWork {
     @PUT
     @Path("paymentcheckout/v3/order/")
     public void updateOrder(@PathParam("orderId") Short orderId, Order entity) {
-        entityManager.merge(entity);
+        getEntityManager().merge(entity);
     }
     
     /*
@@ -176,7 +224,7 @@ public class IST411L07GroupWork {
     @Path("paymentcheckout/v3/order/")
     public void deleteOrder(@PathParam("orderId") Short orderId) {
         //remove the order from the data store
-        entityManager.remove(orderId);
+        getEntityManager().remove(orderId);
     }
     
     
@@ -189,7 +237,7 @@ public class IST411L07GroupWork {
     @Produces(MediaType.APPLICATION_JSON)
     public String readTransaction(@PathParam("transactionID)") Short transactionID) {
         //read transaction from the data store
-        return entityManager.find(Transaction.class, transactionID).toString();
+        return getEntityManager().find(Transaction.class, transactionID).toString();
         
     }
 
@@ -217,5 +265,33 @@ public class IST411L07GroupWork {
             System.out.println("Username and/or password is incorrect");
         }        
         return bol;
+    }
+
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    /**
+     * @return the orderArray
+     */
+    public ArrayList<Order> getOrderArray() {
+        return orderArray;
+    }
+
+    /**
+     * @param orderArray the orderArray to set
+     */
+    public void setOrderArray(ArrayList<Order> orderArray) {
+        this.orderArray = orderArray;
     }
 }

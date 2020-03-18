@@ -5,7 +5,6 @@
  */
 package Data;
 
-import com.sun.istack.internal.NotNull;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -28,7 +27,6 @@ public class Transaction implements Serializable{
     
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "TRANSACTION_ID")
     private short transactionID;
     
