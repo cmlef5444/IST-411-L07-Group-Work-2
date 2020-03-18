@@ -146,14 +146,14 @@ public class OrderResource {
 //    
     @GET
     @Path("order/all")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getAllOrders(){
         return orderService.getAllOrders();
     }
     
     @GET
     @Path("order/{orderId}")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public Order getSingleOrder(@PathParam("orderId") long orderId){
         return orderService.getOrder(orderId);
     }
@@ -165,11 +165,13 @@ public class OrderResource {
     public Order createOrder(Order order){
         return orderService.addOrder(order);
     }
-    //FIX_ME delete method test()
-    @POST
-    @Path("order/make")
-    public String test(){
-        return "POST works";
+    
+    @PUT
+    @Path("order/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Order updateOrder(Order order){
+        return orderService.updateOrder(order);
     }
     
     
