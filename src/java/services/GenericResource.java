@@ -17,7 +17,7 @@ import javax.ws.rs.PUT;
 /**
  * REST Web Service
  *
- * @author cjani
+ * @author Chris Lefebvre
  */
 @Path("generic")
 public class GenericResource {

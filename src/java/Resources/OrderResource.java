@@ -80,6 +80,12 @@ public class OrderResource {
         } catch (MalformedURLException e) {
         }
     }
+    
+    /**
+     *GET method
+     *getAllOrders() returns all orders in the Hash Map
+     *@param 
+     */
 
     @GET
     @Path("order/all")
@@ -87,6 +93,11 @@ public class OrderResource {
     public List<Order> getAllOrders(){
         return orderService.getAllOrders();
     }
+    /**    
+     *GET Method
+     *getSingleOrder() returns a single order from the Hash Map based off the orderId
+     *@param orderId
+     */
     
     @GET
     @Path("order/{orderId}")
@@ -94,6 +105,11 @@ public class OrderResource {
     public Order getSingleOrder(@PathParam("orderId") long orderId){
         return orderService.getOrder(orderId);
     }
+    /**    
+     *POST Method
+     *createOrder() adds a single instance of order to the Hash Map
+     *@param order
+     */
     
     @POST
     @Path("order/create")
@@ -102,6 +118,11 @@ public class OrderResource {
     public Order createOrder(Order order){
         return orderService.addOrder(order);
     }
+    /**    
+     *PUT Method
+     *updateOrder() updates a single instance of order from the Hash Map
+     *@param order
+     */
     
     @PUT
     @Path("order/update")
@@ -110,12 +131,17 @@ public class OrderResource {
     public Order updateOrder(Order order){
         return orderService.updateOrder(order);
     }
+    /**    
+     *DELETE Method
+     *deleteOrder() removes a single instance of order from the Hash Map based off the orderId
+     *@param orderId
+     */
     
     @DELETE
     @Path("order/delete/{orderId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteOrder(@PathParam("orderId") long id){
-        orderService.removeOrder(id);
+    public void deleteOrder(@PathParam("orderId") long orderId){
+        orderService.removeOrder(orderId);
     }
   
     /*
